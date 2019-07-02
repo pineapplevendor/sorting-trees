@@ -23,18 +23,27 @@
     [:div {:class "branch"} (concat (:id branch) ": " (:description branch))]
     (map render-branch (get branch :children []))])
 
-(defn get-ids
+(defn get-ids-in-branch
   [branch]
   (cons
     (:id branch)
-    (reduce concat (map get-ids (get branch :children [])))))
+    (reduce concat (map get-ids-in-branch (get branch :children [])))))
+
+(defn get-ids
+  [tree]
+  (reduce concat (map get-ids-in-branch tree)))
 
 (defn get-duplicate-ids
   [sort-tree]
-  (let [ids (reduce concat (map get-ids sort-tree))]
+  (let [ids (get-ids sort-tree)]
     (for [[id freq] (frequencies ids)
           :when (> freq 1)]
      id)))
+
+(defn get-max-id
+  [sort-tree]
+  (let [ids (get-ids sort-tree)]
+    (reduce max (map read-string ids))))
 
 (defn tree-view
   [{:keys [json-tree]}]
@@ -43,5 +52,8 @@
       [:p (concat 
             "List of duplicate ids: " 
 	    (pr-str (get-duplicate-ids sort-tree)))]
+      [:p (concat
+	    "Max id used in tree: "
+	    (str (get-max-id sort-tree)))]
       (map render-branch sort-tree))))
 
