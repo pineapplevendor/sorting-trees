@@ -17,7 +17,6 @@ To start a web server for the application, run:
 ## Example JSON Sorting Tree Input
 
 ```
-[
   {
     "description": "All CS Contacts",
     "id": "5",
@@ -42,6 +41,5 @@ To start a web server for the application, run:
       }
     ]
   }
-]
 ```
 

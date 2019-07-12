@@ -23,15 +23,11 @@
     [:div {:class "branch"} (concat (:id branch) ": " (:description branch))]
     (map render-branch (get branch :children []))])
 
-(defn get-ids-in-branch
+(defn get-ids
   [branch]
   (cons
     (:id branch)
-    (reduce concat (map get-ids-in-branch (get branch :children [])))))
-
-(defn get-ids
-  [tree]
-  (reduce concat (map get-ids-in-branch tree)))
+    (reduce concat (map get-ids (get branch :children [])))))
 
 (defn get-duplicate-ids
   [sort-tree]
@@ -55,5 +51,5 @@
       [:p (concat
 	    "Max id used in tree: "
 	    (str (get-max-id sort-tree)))]
-      (map render-branch sort-tree))))
+      (render-branch sort-tree))))
 
